@@ -21,12 +21,7 @@ aria-label="Frequently Asked Questions board with a curious peeking cat on top a
 <!--=========================================================================
 1. SIDE ANNOTATION ("SAME CURIOSITY. BIGGER IDEAS." + ARROW)
 ========================================================================= -->
-<g id="side-annotation" transform="translate(22, 292) rotate(-13)">
-<text x="0" y="0" class="hand-note-side">SAME</text>
-<text x="0" y="22" class="hand-note-side">CURIOSITY.</text>
-<text x="0" y="44" class="hand-note-side">BIGGER</text>
-<text x="0" y="66" class="hand-note-side">IDEAS.</text>
-</g>
+<!-- Side annotation is painted last to stay in front of the board. -->
 <!-- Hand-drawn curved arrow pointing to the board -->
 <path
 d="M 78 432 C 54 429, 44 405, 48 377"
@@ -538,5 +533,11 @@ fill="none"
 <circle id="yarn-hitbox" class="cat-hitbox" cx="0" cy="0" r="42" />
 </g>
 </g>
+</g>
+<g id="side-annotation" transform="translate(8, 292) rotate(-13) scale(0.8)">
+<text x="0" y="0" class="hand-note-side">SAME</text>
+<text x="0" y="22" class="hand-note-side">CURIOSITY.</text>
+<text x="0" y="44" class="hand-note-side">BIGGER</text>
+<text x="0" y="66" class="hand-note-side">IDEAS.</text>
 </g>
 </svg>`;

@@ -292,7 +292,7 @@
   border: 3.5px solid var(--ink);
   border-radius: var(--wob);
   overflow: hidden;
-  background: #f1efea;
+  background: var(--dc-sage);
 }
 
 .gal__viewport img {

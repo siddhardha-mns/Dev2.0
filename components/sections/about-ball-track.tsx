@@ -78,7 +78,7 @@ export default function AboutBallTrack() {
         <div
           ref={clipRef}
           aria-hidden="true"
-          className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-catalyst-paper motion-reduce:hidden"
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-catalyst-white motion-reduce:hidden"
         >
           <p className="max-w-4xl text-balance text-[clamp(2.6rem,7vw,6rem)] font-semibold leading-[.98] tracking-[-.04em]">
             Students connect. Community takes shape.

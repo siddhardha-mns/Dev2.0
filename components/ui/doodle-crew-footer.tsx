@@ -119,7 +119,7 @@ export default function DoodleCrewFooter() {
   }, []);
 
   return (
-    <footer ref={footerRef} id="footer" className="relative w-full overflow-hidden border-t border-[#e6e6e6] bg-white px-0 pt-[clamp(110px,15vh,180px)] text-[#0f0f0f]">
+    <footer ref={footerRef} id="footer" className="relative w-full overflow-hidden border-t border-catalyst-line bg-catalyst-lime px-0 pt-[clamp(110px,15vh,180px)] text-[#0f0f0f]">
       <div className="dc-footer-micro pointer-events-none absolute left-[4vw] top-12 hidden border-l border-black pl-4 font-mono text-[11px] uppercase leading-[2.1] tracking-[0.3em] lg:block">Student led<br />Tech<br />Community</div>
       <div className="dc-footer-micro pointer-events-none absolute right-[4vw] top-12 hidden font-mono text-[11px] uppercase leading-[2.1] tracking-[0.3em] lg:block"><Sparkle className="mb-2 block w-4" />Ideas<br />People<br />Projects<br />Impact<span className="mt-2 block h-px w-11 -rotate-2 bg-black" /></div>
 
@@ -136,9 +136,9 @@ export default function DoodleCrewFooter() {
           <svg className="dc-footer-scribble pointer-events-none absolute -bottom-[7%] left-[1%] h-[34px] w-[98%]" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path d="M12 34C180 18 360 44 540 30S880 22 988 32" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" /><path d="M20 44C200 32 420 50 620 38S900 32 978 40" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".4" /></svg>
         </div>
 
-        <h3 className="dc-footer-reveal mt-[clamp(56px,8vh,90px)] text-center text-[clamp(20px,2.6vw,36px)] font-black tracking-[-.035em]">Students come together. <span className="text-[#8a8a8a]">Community grows from there.</span></h3>
+        <h3 className="dc-footer-reveal mt-[clamp(56px,8vh,90px)] text-center text-[clamp(20px,2.6vw,36px)] font-black tracking-[-.035em]">Students come together. <span className="text-catalyst-muted">Community grows from there.</span></h3>
         <div className="dc-footer-reveal mt-[30px] flex flex-wrap justify-center gap-[14px] px-[4vw]">
-          <Link href="/partner-with-devcatalyst" className="flex min-h-12 items-center gap-2.5 rounded-full bg-[#0f0f0f] px-7 py-3.5 text-base font-medium text-white transition-colors hover:bg-[#333] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4">Partner with us <Arrow /></Link>
+          <Link href="/partner-with-devcatalyst" className="flex min-h-12 items-center gap-2.5 rounded-full bg-catalyst-forest px-7 py-3.5 text-base font-medium text-white transition-colors hover:bg-[#333] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4">Partner with us <Arrow /></Link>
           <a href="https://socials.devcatalyst.in/" target="_blank" rel="noreferrer noopener" className="flex min-h-12 items-center gap-2.5 rounded-full border border-[#0f0f0f] px-7 py-3.5 text-base font-medium transition-colors hover:bg-[#f1f1f1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4">Join DevCatalyst</a>
         </div>
 
