@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "^15.5.28",
     "@radix-ui/react-separator": "^1.2.0",
     "@radix-ui/react-slot": "^1.1.2",
     "@react-three/drei": "^10.7.9",

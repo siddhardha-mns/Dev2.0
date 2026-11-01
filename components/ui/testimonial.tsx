@@ -17,6 +17,8 @@ export default function ClientFeedback() {
     if (!viewport || !group) return;
 
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mobileQuery = window.matchMedia("(max-width: 768px)");
+    let isMobile = mobileQuery.matches;
     let width = 0;
     let frame = 0;
     let previousTime = 0;
@@ -25,28 +27,52 @@ export default function ClientFeedback() {
     let touching = false;
     let activeTouch = false;
     let resumeAt = 0;
-    const focused = () => viewport.contains(document.activeElement)
-      && document.activeElement?.matches(":focus-visible");
+    let isVisible = false;
+
+    const onMediaChange = () => {
+      isMobile = mobileQuery.matches;
+    };
+    mobileQuery.addEventListener("change", onMediaChange);
+
+    const focused = () =>
+      viewport.contains(document.activeElement) &&
+      document.activeElement?.matches(":focus-visible");
+
     const measure = () => {
       width = group.getBoundingClientRect().width;
       viewport.scrollLeft = preference.matches ? 0 : width;
       remainder = 0;
     };
+
     const wrap = () => {
       if (preference.matches || !width || focused()) return;
-      // Keep a full copy on either side for scrolling in both directions.
       if (viewport.scrollLeft < width / 2 || viewport.scrollLeft >= width * 1.5) {
-        viewport.scrollLeft = width / 2 + ((viewport.scrollLeft - width / 2) % width + width) % width;
+        viewport.scrollLeft = width / 2 + (((viewport.scrollLeft - width / 2) % width) + width) % width;
       }
     };
+
     const tick = (time: number) => {
+      if (!isVisible) {
+        frame = 0;
+        return;
+      }
+
       const elapsed = previousTime ? Math.min(time - previousTime, 50) : 0;
       previousTime = time;
-      if (!preference.matches && !hovered && !touching && !activeTouch && !focused() && time >= resumeAt) {
-        // Accumulate fractional pixels so slow motion works in every browser.
-        remainder += elapsed * width / 125000;
+
+      if (
+        !preference.matches &&
+        !hovered &&
+        !touching &&
+        !activeTouch &&
+        !focused() &&
+        time >= resumeAt
+      ) {
+        // Brisk, smooth speed: 38px/s on mobile, balanced dynamically on desktop
+        const speed = isMobile ? 38 : Math.max(30, width / 70);
+        remainder += (elapsed / 1000) * speed;
         const distance = Math.floor(remainder);
-        if (distance) {
+        if (distance > 0) {
           remainder -= distance;
           viewport.scrollLeft += distance;
           wrap();
@@ -54,19 +80,62 @@ export default function ClientFeedback() {
       }
       frame = requestAnimationFrame(tick);
     };
-    const enter = (event: PointerEvent) => { if (event.pointerType === "mouse") hovered = true; };
-    const leave = () => { hovered = false; };
-    const down = () => { touching = true; };
-    const release = () => { touching = false; resumeAt = performance.now() + 1500; };
-    const touchStart = () => { activeTouch = true; };
+
+    const startAnimation = () => {
+      if (!frame && isVisible && !preference.matches) {
+        previousTime = 0;
+        frame = requestAnimationFrame(tick);
+      }
+    };
+
+    const stopAnimation = () => {
+      if (frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          startAnimation();
+        } else {
+          stopAnimation();
+        }
+      },
+      { rootMargin: "150px" }
+    );
+    io.observe(viewport);
+
+    const enter = (event: PointerEvent) => {
+      if (event.pointerType === "mouse") hovered = true;
+    };
+    const leave = () => {
+      hovered = false;
+    };
+    const down = () => {
+      touching = true;
+    };
+    const release = () => {
+      touching = false;
+      resumeAt = performance.now() + 800;
+    };
+    const touchStart = () => {
+      activeTouch = true;
+    };
     const touchEnd = (event: TouchEvent) => {
       activeTouch = event.touches.length > 0;
-      if (!activeTouch) resumeAt = performance.now() + 1500;
+      if (!activeTouch) resumeAt = performance.now() + 800;
     };
-    const wheel = () => { resumeAt = performance.now() + 1500; };
-    const observer = new ResizeObserver(measure);
-    observer.observe(group);
+    const wheel = () => {
+      resumeAt = performance.now() + 800;
+    };
+
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(group);
     measure();
+
     preference.addEventListener("change", measure);
     viewport.addEventListener("scroll", wrap, { passive: true });
     viewport.addEventListener("pointerenter", enter);
@@ -78,11 +147,12 @@ export default function ClientFeedback() {
     window.addEventListener("pointercancel", release);
     window.addEventListener("touchend", touchEnd, { passive: true });
     window.addEventListener("touchcancel", touchEnd, { passive: true });
-    frame = requestAnimationFrame(tick);
 
     return () => {
-      cancelAnimationFrame(frame);
-      observer.disconnect();
+      stopAnimation();
+      io.disconnect();
+      resizeObserver.disconnect();
+      mobileQuery.removeEventListener("change", onMediaChange);
       preference.removeEventListener("change", measure);
       viewport.removeEventListener("scroll", wrap);
       viewport.removeEventListener("pointerenter", enter);
