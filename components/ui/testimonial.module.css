@@ -1,8 +1,36 @@
-.viewport { margin-top:40px; overflow-x:auto; padding:6px 0 12px; scrollbar-width:none; overflow-anchor:none; scroll-behavior:auto; }
-.viewport::-webkit-scrollbar { display:none; }
-.track { display:flex; width:max-content; }
-.group { display:flex; flex:none; min-width:100vw; justify-content:space-around; gap:20px; padding:0 20px 0 0; margin:0; list-style:none; }
-.card { flex:none; width:min(82vw,340px); }
+.viewport {
+  margin-top: 40px;
+  overflow-x: auto;
+  padding: 6px 0 12px;
+  scrollbar-width: none;
+  overflow-anchor: none;
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior-x: contain;
+}
+.viewport::-webkit-scrollbar { display: none; }
+.track {
+  display: flex;
+  width: max-content;
+  will-change: scroll-position;
+}
+.group {
+  display: flex;
+  flex: none;
+  min-width: 100vw;
+  justify-content: space-around;
+  gap: 20px;
+  padding: 0 20px 0 0;
+  margin: 0;
+  list-style: none;
+}
+.card {
+  flex: none;
+  width: min(82vw, 340px);
+  contain: content;
+  transform: translateZ(0);
+}
 @media(prefers-reduced-motion:reduce) {
-  .group[aria-hidden="true"] { display:none; }
+  .group[aria-hidden="true"] { display: none; }
 }

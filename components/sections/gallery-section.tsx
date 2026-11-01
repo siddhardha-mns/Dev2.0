@@ -1,6 +1,8 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ArrowUpRight } from "lucide-react";
-import EventFolderGallery from "@/components/ui/event-folder-gallery";
+
+const EventFolderGallery = dynamic(() => import("@/components/ui/event-folder-gallery"));
 import { CATEGORY_FOLDERS } from "@/components/ui/event-folder-data";
 
 export default function GallerySection() {
