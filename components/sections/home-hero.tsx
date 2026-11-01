@@ -5,9 +5,14 @@ import { gsap } from "gsap";
 import { useLayoutEffect, useRef } from "react";
 import Link from "next/link";
 
-import { CrowdCanvas } from "@/components/ui/skiper39";
+import dynamic from "next/dynamic";
 import AnimatedHeroHeadline from "@/components/ui/animated-hero-headline";
 import SiteNav from "./site-nav";
+
+const CrowdCanvas = dynamic(
+  () => import("@/components/ui/skiper39").then((m) => m.CrowdCanvas),
+  { ssr: false }
+);
 
 const activities = [
   { label: "WORKSHOPS", Icon: Users },

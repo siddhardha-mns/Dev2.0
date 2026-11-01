@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import Image from "next/image";
@@ -98,7 +98,7 @@ export default function EventFolderGallery({ items = EVENTS, categories = false 
           <div className="relative">
             <button type="button" className={cx("sticker-btn", "nav-arrow", "prev")} aria-label="Previous print" onClick={() => navigate(-1)}><ChevronLeft aria-hidden="true" /></button>
             <figure className={styles.gal__viewport}>
-              <Image src={event.photos[index].src} alt={event.photos[index].alt} width={1800} height={1200} sizes="(max-width: 700px) calc(100vw - 64px), 900px" priority />
+              <Image src={event.photos[index].src} alt={event.photos[index].alt} width={1800} height={1200} sizes="(max-width: 700px) calc(100vw - 64px), 900px" />
               <figcaption className={styles.gal__caption} aria-live="polite"><span>{event.photos[index].caption}</span><strong>{index + 1} / {event.photos.length}</strong></figcaption>
             </figure>
             <button type="button" className={cx("sticker-btn", "nav-arrow", "next")} aria-label="Next print" onClick={() => navigate(1)}><ChevronRight aria-hidden="true" /></button>

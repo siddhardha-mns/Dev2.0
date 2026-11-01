@@ -1,5 +1,7 @@
-import FaqCatBoard from "@/components/sections/faq-cat-board";
+import dynamic from "next/dynamic";
 import FaqQuestions from "@/components/sections/faq-questions";
+
+const FaqCatBoard = dynamic(() => import("@/components/sections/faq-cat-board"));
 
 export default function FAQSection() {
   return (
