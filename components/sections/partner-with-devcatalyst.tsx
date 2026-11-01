@@ -27,7 +27,7 @@ export default function PartnerWithDevCatalyst() {
   return (
     <main className={styles.page}>
       <SiteNav />
-      <section data-nav-theme="dark" aria-labelledby="partner-title" className={styles.hero}>
+      <section data-nav-theme="light" aria-labelledby="partner-title" className={styles.hero}>
         <div className={styles.heroPhoto}>
           <Image src="/event-gallery/catalyst-days/01.jpg" alt="The Catalyst Days student community gathered for a group photograph" fill priority sizes="(min-width: 900px) 60vw, 100vw" />
           <span className={styles.photoShade} />
