@@ -9,7 +9,7 @@
 }
 
 .line { display: block; white-space: nowrap; }
-.muted { color: #858585; }
+.muted { color: var(--dc-forest); }
 .scramble, .rotatingWrap { position: relative; display: inline-block; }
 .measure { visibility: hidden; }
 .scrambled, .rotating { position: absolute; left: 0; top: 0; }
@@ -23,7 +23,7 @@
   bottom: -7px;
   width: 100%;
   height: 4px;
-  background: #858585;
+  background: var(--dc-teal);
   transform: scaleX(0);
   transform-origin: left;
   animation: underline 0.8s 0.5s ease forwards;

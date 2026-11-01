@@ -44,7 +44,7 @@ export default function HomeHero() {
         ref={heroRef}
         id="home"
         aria-labelledby="hero-title"
-        className="relative isolate min-h-[100svh] overflow-hidden bg-catalyst-paper text-catalyst-ink lg:min-h-screen lg:min-h-[100svh]"
+        className="relative isolate min-h-[100svh] overflow-hidden bg-catalyst-lime text-catalyst-ink lg:min-h-screen lg:min-h-[100svh]"
       >
         <div className="pointer-events-none absolute left-7 top-9 z-20 hidden h-32 border-l border-catalyst-forest/70 pl-4 md:block lg:left-10">
           <p className="max-w-[90px] text-[10px] font-medium uppercase leading-[1.55] tracking-[0.17em] text-catalyst-muted">
@@ -99,7 +99,7 @@ export default function HomeHero() {
                 href="https://socials.devcatalyst.in/"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-catalyst-line/80 bg-catalyst-white/60 px-6 py-3 text-sm font-medium text-catalyst-ink shadow-[0_5px_24px_rgba(0,0,0,0.06)] backdrop-blur-xl transition-colors duration-200 hover:bg-catalyst-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4 motion-reduce:transition-none"
+                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-catalyst-line bg-catalyst-sage px-6 py-3 text-sm font-medium text-catalyst-ink shadow-[0_5px_24px_rgba(0,0,0,0.06)] backdrop-blur-xl transition-colors duration-200 hover:bg-catalyst-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4 motion-reduce:transition-none"
               >
                 Join the community
                 <ArrowUpRight size={17} strokeWidth={1.8} />
@@ -113,16 +113,20 @@ export default function HomeHero() {
             data-hero-aside
             className="hidden min-w-0 flex-col items-end pt-2 lg:flex"
           >
-            <div className="mt-6 flex w-full items-center justify-end gap-3">
-              <div className="relative w-[190px] shrink-0 border-l border-catalyst-forest/75 pl-6">
+            <div className="mt-6 w-full max-w-[300px] rounded-3xl border border-catalyst-line bg-catalyst-white p-6 shadow-[0_12px_32px_rgba(20,20,20,0.07)]">
+              <p className="mb-4 text-sm font-semibold text-catalyst-forest">Explore the community</p>
+              <div className="relative border-l border-catalyst-line pl-6">
                 {activities.map(({ label, Icon }) => (
                   <div key={label} className="relative flex min-h-[45px] items-center gap-3">
                     <span aria-hidden="true" className="absolute -left-[29px] top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-catalyst-forest" />
                     <Icon aria-hidden="true" size={21} strokeWidth={1.6} className="shrink-0 text-catalyst-ink" />
-                    <span className="whitespace-nowrap text-[10px] font-medium tracking-[0.14em] text-catalyst-muted">{label}</span>
+                    <span className="whitespace-nowrap text-xs font-medium tracking-[0.1em] text-catalyst-muted">{label}</span>
                   </div>
                 ))}
               </div>
+              <Link href="/event-gallery" className="mt-5 flex min-h-11 items-center justify-between gap-3 rounded-xl bg-catalyst-forest px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-catalyst-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-2">
+                Explore events <ArrowUpRight aria-hidden="true" size={17} />
+              </Link>
             </div>
           </aside>
         </div>

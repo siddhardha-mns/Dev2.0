@@ -24,14 +24,14 @@ function linkedAnswer(answer: string) {
 
 export default function FaqQuestions() {
   const [category, setCategory] = useState<typeof FAQ_CATEGORIES[number]>("Events");
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState(-1);
   const questions = FAQ_ITEMS.filter((item) => item.category === category);
 
   return (
     <section className="dc-faq-content-col" aria-label="Frequently Asked Questions">
       <div className="dc-filter-bar" role="group" aria-label="Filter questions by category">
         {FAQ_CATEGORIES.map((item) => (
-          <button key={item} type="button" className={`dc-filter-btn${category === item ? " active" : ""}`} aria-pressed={category === item} onClick={() => { setCategory(item); setOpenIndex(0); }}>{item}</button>
+          <button key={item} type="button" className={`dc-filter-btn${category === item ? " active" : ""}`} aria-pressed={category === item} onClick={() => { setCategory(item); setOpenIndex(-1); }}>{item}</button>
         ))}
       </div>
       <p className="mb-6 text-sm leading-6 text-catalyst-muted">
