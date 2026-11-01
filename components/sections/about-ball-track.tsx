@@ -22,11 +22,13 @@ export default function AboutBallTrack() {
       frame = 0;
       const viewportHeight = window.innerHeight;
       const viewportWidth = track.clientWidth;
+      const isMobile = viewportWidth < 768;
+      const ballSize = isMobile ? Math.min(220, Math.max(180, Math.round(viewportWidth * 0.54))) : BALL_SIZE;
       const progress = Math.min(1, Math.max(0, -track.getBoundingClientRect().top / (viewportHeight * 2)));
       const centerProgress = Math.min(1, progress * 2);
       const expandProgress = Math.max(0, (progress - 0.5) * 2);
-      const yOffset = (1 - centerProgress * centerProgress) * (viewportHeight / 2 + BALL_SIZE / 2);
-      const size = BALL_SIZE + expandProgress * expandProgress * (Math.max(viewportWidth, viewportHeight) * 2.8 - BALL_SIZE);
+      const yOffset = (1 - centerProgress * centerProgress) * (viewportHeight / 2 + ballSize / 2);
+      const size = ballSize + expandProgress * expandProgress * (Math.max(viewportWidth, viewportHeight) * 2.8 - ballSize);
 
       if (ballRef.current) {
         ballRef.current.style.width = ballRef.current.style.height = `${size}px`;
