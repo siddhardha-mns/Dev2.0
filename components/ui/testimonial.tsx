@@ -27,7 +27,7 @@ export default function ClientFeedback() {
     let touching = false;
     let activeTouch = false;
     let resumeAt = 0;
-    let isVisible = false;
+    let isVisible = true;
 
     const onMediaChange = () => {
       isMobile = mobileQuery.matches;
@@ -40,7 +40,9 @@ export default function ClientFeedback() {
 
     const measure = () => {
       width = group.getBoundingClientRect().width;
-      viewport.scrollLeft = preference.matches ? 0 : width;
+      if (!viewport.scrollLeft && !preference.matches && width > 0) {
+        viewport.scrollLeft = width;
+      }
       remainder = 0;
     };
 
@@ -68,8 +70,8 @@ export default function ClientFeedback() {
         !focused() &&
         time >= resumeAt
       ) {
-        // Brisk, smooth speed: 38px/s on mobile, balanced dynamically on desktop
-        const speed = isMobile ? 38 : Math.max(30, width / 70);
+        // Brisk, confident speed: ~48px/s on mobile, perfectly readable and active
+        const speed = isMobile ? 48 : Math.max(36, width / 55);
         remainder += (elapsed / 1000) * speed;
         const distance = Math.floor(remainder);
         if (distance > 0) {
@@ -104,7 +106,7 @@ export default function ClientFeedback() {
           stopAnimation();
         }
       },
-      { rootMargin: "150px" }
+      { rootMargin: "1200px" }
     );
     io.observe(viewport);
 
@@ -135,6 +137,7 @@ export default function ClientFeedback() {
     const resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(group);
     measure();
+    startAnimation();
 
     preference.addEventListener("change", measure);
     viewport.addEventListener("scroll", wrap, { passive: true });

@@ -1,6 +1,4 @@
-import dynamic from "next/dynamic";
-
-const ClientFeedback = dynamic(() => import("@/components/ui/testimonial"));
+import ClientFeedback from "@/components/ui/testimonial";
 
 export default function TestimonialsSection() {
   return (
