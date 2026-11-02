@@ -12,7 +12,7 @@ The site highlights DevCatalyst's mission, events, testimonials, and collaborati
 - Event gallery pages and media-driven storytelling
 - Testimonials overview and detailed testimonial route (`/testimonials/[slug]`)
 - Partner collaboration page (`/partner-with-devcatalyst`)
-- Contact section with client-side validation
+- Contact form that stores submissions in Google Sheets and emails the team via Apps Script
 
 ## Tech stack
 
@@ -57,7 +57,22 @@ cp .env.example .env.local
 
 Current environment key:
 
-- `NEXT_PUBLIC_CONTACT_SCRIPT_URL`: reserved for future contact form integration (the current form validates input but does not submit data).
+- `CONTACT_SCRIPT_URL`: server-only Apps Script `/exec` URL. The browser posts to `/api/contact`, which forwards to this URL so it stays private.
+
+### Contact form backend (Google Apps Script)
+
+The contact form saves each submission to a Google Sheet and notifies the team with `MailApp`.
+
+1. Create a Google Sheet and add a tab named `Submissions`.
+2. Create an Apps Script project and add `appscript/Code.gs` and `appscript/appsscript.json`.
+3. In Project Settings → Script Properties, set:
+   - `NOTIFICATION_EMAIL` (for example `contact@devcatalyst.in`)
+   - `CC_EMAIL` (optional, for example `devcatalyst.2025@gmail.com`)
+   - `SPREADSHEET_ID` (from the Sheet URL)
+   - `SHEET_NAME` (optional, defaults to `Submissions`)
+4. Deploy → New deployment → Web app → execute as **me**, access **anyone**.
+5. Copy the `/exec` URL into `CONTACT_SCRIPT_URL` locally and in your hosting provider's environment variables.
+6. Create a new deployment version after any Apps Script change.
 
 ## Validation and quality checks
 
