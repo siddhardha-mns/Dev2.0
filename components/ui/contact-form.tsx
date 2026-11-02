@@ -46,26 +46,30 @@ function validateContact(values: { name: string; email: string; phone: string; c
 
 type ContactField = "name" | "email" | "phone" | "company" | "message";
 type ContactErrors = Partial<Record<ContactField, string>>;
+type SubmitStatus = "idle" | "invalid" | "submitting" | "success" | "error";
 
 const fieldBaseClass = "mt-2 w-full rounded-xl border bg-catalyst-paper px-4 py-3.5 text-base leading-6 text-catalyst-ink outline-none transition-colors placeholder:text-catalyst-muted/80 focus:border-catalyst-forest focus:ring-2 focus:ring-catalyst-forest/15";
 
 export default function ContactForm() {
   const [errors, setErrors] = useState<ContactErrors>({});
-  const [status, setStatus] = useState<"idle" | "invalid" | "not-connected">("idle");
+  const [status, setStatus] = useState<SubmitStatus>("idle");
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const readText = (name: ContactField) => {
+    if (status === "submitting") return;
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const read = (name: string) => {
       const value = formData.get(name);
       return typeof value === "string" ? value : "";
     };
     const values = {
-      name: readText("name"),
-      email: readText("email"),
-      phone: readText("phone"),
-      company: readText("company"),
-      message: readText("message"),
+      name: read("name"),
+      email: read("email"),
+      phone: read("phone"),
+      company: read("company"),
+      message: read("message"),
     };
     const result = validateContact(values);
 
@@ -80,9 +84,30 @@ export default function ContactForm() {
       return;
     }
 
-    // Wire this form to NEXT_PUBLIC_CONTACT_FORM_ENDPOINT after the team provides the endpoint.
     setErrors({});
-    setStatus("not-connected");
+    setStatus("submitting");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...values,
+          website: read("website"),
+          source: "home-contact",
+          submittedAt: new Date().toISOString(),
+        }),
+      });
+      const data = await response.json().catch(() => null);
+      if (!response.ok || !data || data.ok !== true) {
+        setStatus("error");
+        return;
+      }
+      form.reset();
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
   };
 
   const clearFieldError = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -93,8 +118,10 @@ export default function ContactForm() {
       delete next[field];
       return next;
     });
-    setStatus("idle");
+    setStatus((current) => (current === "submitting" ? current : "idle"));
   };
+
+  const submitting = status === "submitting";
 
   return (
     <form
@@ -105,8 +132,15 @@ export default function ContactForm() {
       <div>
         <h3 className="text-lg font-semibold">Send a message</h3>
         <p className="mt-1 text-sm leading-6 text-catalyst-muted">
-          Check your details here. Form delivery will be connected to an endpoint later.
+          Share a few details and we&apos;ll get back to you by email.
         </p>
+      </div>
+
+      <div className="hidden" aria-hidden="true">
+        <label>
+          Website
+          <input name="website" tabIndex={-1} autoComplete="off" />
+        </label>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -197,12 +231,15 @@ export default function ContactForm() {
 
       <Button
         type="submit"
+        disabled={submitting}
+        aria-busy={submitting}
         className="min-h-12 w-fit rounded-xl bg-catalyst-forest px-6 text-white hover:bg-catalyst-ink focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4"
       >
-        Validate message <ArrowRight className="ml-2" size={16} aria-hidden="true" />
+        {submitting ? "Sending..." : "Send message"}
+        {!submitting && <ArrowRight className="ml-2" size={16} aria-hidden="true" />}
       </Button>
       <p className="text-xs leading-5 text-catalyst-muted" role="note">
-        This form does not send or store messages yet. For now, email{" "}
+        We&apos;ll only use your details to reply. Prefer email? Write to{" "}
         <a className="font-medium text-catalyst-ink underline underline-offset-2" href={emailHref()}>contact@devcatalyst.in</a>.
       </p>
       {status === "invalid" && (
@@ -210,9 +247,15 @@ export default function ContactForm() {
           Review the fields marked above, then try again.
         </p>
       )}
-      {status === "not-connected" && (
+      {status === "success" && (
         <p role="status" className="text-sm font-medium text-catalyst-ink">
-          Your details are valid, but this form is not connected and nothing was sent. Email contact@devcatalyst.in instead.
+          Thanks — your message is on its way. We&apos;ll reply by email.
+        </p>
+      )}
+      {status === "error" && (
+        <p role="alert" className="text-sm font-medium text-red-700">
+          Something went wrong sending your message. Please email{" "}
+          <a className="underline underline-offset-2" href={emailHref()}>contact@devcatalyst.in</a> instead.
         </p>
       )}
     </form>
