@@ -74,6 +74,11 @@ export default function SiteNav() {
   }, [mobileOpen]);
 
   const closeMobileMenu = () => setMobileOpen(false);
+  const handleLogoClick = () => {
+    closeMobileMenu();
+    // Easter egg: a whale shark swims across the page. Loaded on demand; navigation is untouched.
+    void import("@/components/ui/whale-shark").then((m) => m.triggerWhaleShark("logo")).catch(() => {});
+  };
   const inkText = darkTheme ? "text-white visited:text-white" : "text-catalyst-ink visited:text-catalyst-ink";
   const surface = darkTheme
     ? "border-white/20 bg-catalyst-ink/95 shadow-[0_10px_35px_rgba(0,0,0,0.24)]"
@@ -94,7 +99,7 @@ export default function SiteNav() {
         <div className={`relative flex min-h-[60px] items-center justify-between gap-3 rounded-full border px-3 py-2 backdrop-blur-xl transition-[background-color,border-color,box-shadow] duration-200 motion-reduce:transition-none ${surface}`}>
           <Link
             href="/#home"
-            onClick={closeMobileMenu}
+            onClick={handleLogoClick}
             aria-label="DevCatalyst home"
             className={`group flex min-h-11 min-w-0 shrink-0 items-center gap-2.5 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${darkTheme ? "focus-visible:ring-white focus-visible:ring-offset-catalyst-ink" : "focus-visible:ring-catalyst-forest focus-visible:ring-offset-white"}`}
           >
